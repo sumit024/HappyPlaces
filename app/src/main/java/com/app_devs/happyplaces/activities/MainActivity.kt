@@ -33,6 +33,13 @@ class MainActivity : AppCompatActivity() {
         rv_happy_places_list.setHasFixedSize(true)
         val myAdapter=HappyPlaceAdapter(this,list)
         rv_happy_places_list.adapter=myAdapter
+        myAdapter.setOnClickListener(object:HappyPlaceAdapter.OnClickListener{
+            override fun onClick(position: Int, model: HappyPlaceModel) {
+                val intent=Intent(this@MainActivity,HappyPlaceDetailActivity::class.java)
+                startActivity(intent)
+            }
+        })
+
     }
     private fun getHappyPlacesList()
     {
