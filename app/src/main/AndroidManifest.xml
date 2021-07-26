@@ -2,10 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.app_devs.happyplaces">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -13,16 +14,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HappyPlaces">
-        <activity android:name=".activities.AddHappyPlacesActivity"
+        <activity android:name=".activities.HappyPlaceDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/customNoActionBarTheme">
 
         </activity>
         <activity
+            android:name=".activities.AddHappyPlacesActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/customNoActionBarTheme"></activity>
+        <activity
             android:name=".activities.MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/customNoActionBarTheme"
-          >
+            android:theme="@style/customNoActionBarTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
