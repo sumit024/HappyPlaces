@@ -63,6 +63,23 @@ class DatabaseHandler(context: Context) :SQLiteOpenHelper(context, DATABASE_NAME
         Log.d("ADDED","YES")
         return result
     }
+    fun updateHappyPlace(happyPlaceModel: HappyPlaceModel):Int
+    {
+        val db=this.writableDatabase
+        val cv=ContentValues()
+        cv.put(KEY_TITLE,happyPlaceModel.title)
+        cv.put(KEY_DESCRIPTION,happyPlaceModel.description)
+        cv.put(KEY_DATE,happyPlaceModel.date)
+        cv.put(KEY_LATITUDE,happyPlaceModel.latitude)
+        cv.put(KEY_LONGITUDE,happyPlaceModel.longitude)
+        cv.put(KEY_LOCATION,happyPlaceModel.location)
+        cv.put(KEY_IMAGE,happyPlaceModel.image)
+
+        val result=db.update(TABLE_NAME,cv, KEY_ID+"="+happyPlaceModel.id,null)
+        db.close()
+        Log.d("Updated","YES")
+        return result
+    }
 
     fun getHappyPlaceList(): ArrayList<HappyPlaceModel>
     {
@@ -95,6 +112,14 @@ class DatabaseHandler(context: Context) :SQLiteOpenHelper(context, DATABASE_NAME
         }
         return list
 
+    }
+
+    fun deleteHappyPlace(happyPlaceModel: HappyPlaceModel):Int
+    {
+        val db=this.writableDatabase
+        val success=db.delete(TABLE_NAME, KEY_ID+"="+happyPlaceModel.id,null)
+        db.close()
+        return success
     }
 
 

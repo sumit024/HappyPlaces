@@ -1,12 +1,17 @@
 package com.app_devs.happyplaces.adapters
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app_devs.happyplaces.R
+import com.app_devs.happyplaces.activities.AddHappyPlacesActivity
+import com.app_devs.happyplaces.activities.MainActivity
+import com.app_devs.happyplaces.databases.DatabaseHandler
 import com.app_devs.happyplaces.models.HappyPlaceModel
 import kotlinx.android.synthetic.main.item_happy_place.view.*
 
@@ -35,6 +40,26 @@ class HappyPlaceAdapter(private val context: Context, private val list:ArrayList
     override fun getItemCount(): Int {
         return list.size
     }
+
+    fun notifyEditItem(activity: Activity, position:Int,requestCode:Int)
+    {
+        val intent=Intent(context,AddHappyPlacesActivity::class.java)
+        intent.putExtra(MainActivity.EXTRA_PLACE_DETAILS,list[position])
+        activity.startActivityForResult(intent,requestCode)
+        notifyItemChanged(position)
+    }
+    fun deleteItem( position:Int)
+    {
+       val dbHandler=DatabaseHandler(context)
+        val isDelete=dbHandler.deleteHappyPlace(list[position])
+        if(isDelete > 0)
+        {
+            list.removeAt(position)
+            notifyItemRemoved(position)
+        }
+
+    }
+
 
     fun setOnClickListener(onClickListener:OnClickListener)
     {

@@ -43,6 +43,10 @@ class AddHappyPlacesActivity : AppCompatActivity(), View.OnClickListener {
     private var mLongitude:Double=0.0
     private var mLatitude:Double=0.0
 
+    private var mHappyPlaceDetails:HappyPlaceModel?=null
+
+
+
 
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -57,6 +61,13 @@ class AddHappyPlacesActivity : AppCompatActivity(), View.OnClickListener {
             onBackPressed()
         }
 
+        if(intent.hasExtra(MainActivity.EXTRA_PLACE_DETAILS))
+        {
+            mHappyPlaceDetails=intent.getParcelableExtra(MainActivity.EXTRA_PLACE_DETAILS)
+
+        }
+
+
         //i think after ok is pressed
         dateSetListener=DatePickerDialog.OnDateSetListener {
             _, year, month, dayOfMonth ->
@@ -64,6 +75,25 @@ class AddHappyPlacesActivity : AppCompatActivity(), View.OnClickListener {
             cal.set(Calendar.MONTH,month)
             cal.set(Calendar.DAY_OF_MONTH,dayOfMonth)
             updateDate()
+        }
+        updateDate()
+        if(mHappyPlaceDetails!=null)
+        {
+            supportActionBar?.title="Edit Happy Place"
+
+            et_title.setText(mHappyPlaceDetails!!.title)
+            et_description.setText(mHappyPlaceDetails!!.description)
+            et_date.setText(mHappyPlaceDetails!!.date)
+            et_location.setText(mHappyPlaceDetails!!.location)
+            mLatitude = mHappyPlaceDetails!!.latitude
+            mLongitude = mHappyPlaceDetails!!.longitude
+
+            saveImageToInternalStorage = Uri.parse(mHappyPlaceDetails!!.image)
+
+            iv_place_image.setImageURI(saveImageToInternalStorage)
+
+            btn_save.text = "UPDATE"
+
         }
         et_date.setOnClickListener(this)
         tv_add_image.setOnClickListener(this)
@@ -114,7 +144,7 @@ class AddHappyPlacesActivity : AppCompatActivity(), View.OnClickListener {
                         Toast.makeText(this,"Image can't be empty",Toast.LENGTH_SHORT).show()
                     else ->
                     {
-                        val happyPlaceModel=HappyPlaceModel(0,
+                        val happyPlaceModel=HappyPlaceModel(if(mHappyPlaceDetails==null) 0 else mHappyPlaceDetails!!.id,
                                 et_title.text.toString(),
                                 et_description.text.toString(),
                                 saveImageToInternalStorage.toString(),
@@ -122,12 +152,23 @@ class AddHappyPlacesActivity : AppCompatActivity(), View.OnClickListener {
                                 mLatitude,mLongitude,et_date.text.toString()
                         )
                         val dbHandler=DatabaseHandler(this)
-                        val addHappyPlace=dbHandler.addHappyPlace(happyPlaceModel)
-                        if(addHappyPlace>0)
-                        {
-                           setResult(Activity.RESULT_OK)
-                            finish()
+                        if(mHappyPlaceDetails==null) {
+                            val addHappyPlace = dbHandler.addHappyPlace(happyPlaceModel)
+                            if(addHappyPlace>0)
+                            {
+                                setResult(Activity.RESULT_OK)
+                                finish()
+                            }
                         }
+                        else{
+                            val updateHappyPlace=dbHandler.updateHappyPlace((happyPlaceModel))
+                            if(updateHappyPlace>0)
+                            {
+                                setResult(Activity.RESULT_OK)
+                                finish()
+                            }
+                        }
+
                     }
 
                 }
