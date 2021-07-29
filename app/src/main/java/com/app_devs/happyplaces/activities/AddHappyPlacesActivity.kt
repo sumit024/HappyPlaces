@@ -45,7 +45,7 @@ import java.io.OutputStream
 import java.util.*
 import java.util.jar.Manifest
 import kotlin.math.log
-
+//xyz
 class AddHappyPlacesActivity : AppCompatActivity(), View.OnClickListener {
     private var cal= Calendar.getInstance()
     private lateinit var dateSetListener:DatePickerDialog.OnDateSetListener
